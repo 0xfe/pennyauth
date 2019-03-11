@@ -1,0 +1,40 @@
+{
+  "name": "pennyauth",
+  "version": "1.0.0",
+  "description": "A better captcha",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --port 8200 --disable-host-check --env.NODE_ENV=development --env.TAG_NAME=dev --mode development --config webpack.config.js",
+    "build": "npx webpack --env.NODE_ENV=production --progress --mode production",
+    "serve": "npx http-server -c 1 -p 8201",
+    "clean": "rm -rf ./dist/*"
+  },
+  "keywords": [
+    "auth",
+    "login",
+    "security",
+    "micropayments"
+  ],
+  "author": "Mohit Cheppudira",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "eslint": "^5.15.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.16.0",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1",
+    "webpack-merge": "^4.2.1",
+    "write-file-webpack-plugin": "^4.5.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "zepto-webpack": "^1.2.1"
+  }
+}

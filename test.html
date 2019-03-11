@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://js.quid.works/v1/assets/quid.css" />
+    <link rel="stylesheet" href="test.css" />
+  </head>
+  <body>
+    <h1>
+      Captcha Demo
+    </h1>
+    <div class="demo container">
+      <form id="loginForm" class="container">
+        <div>Username: <input type="text" /></div>
+        <div>Password: <input type="password" /></div>
+        <button id="loginButton" type="submit" disabled>Login</button>
+      </form>
+      <div id="success" style="display:none;">
+        <h1>Success!</h1>
+      </div>
+    </div>
+
+    <script src="http://localhost:8082/dist/client.dev.js"></script>
+    <script src="dist/pennyauth.dev.js"></script>
+    <script>
+      const loginButton = document.getElementById('loginButton');
+      const formEl = document.getElementById('loginForm');
+      const successEl = document.getElementById('success');
+
+      const client = pennyauth.init(() => {
+        loginButton.disabled = false;
+      });
+
+      function login(ev) {
+        loginButton.disabled = true;
+        ev.preventDefault();
+        client.ask(
+          resp => {
+            loginButton.disabled = false;
+            console.log(resp);
+            if (resp.success) {
+              formEl.style.display = 'none';
+              successEl.style.display = 'block';
+            }
+          },
+          e => {
+            console.error(e);
+            loginButton.disabled = false;
+          }
+        );
+        return false;
+      }
+
+      formEl.addEventListener('submit', login);
+    </script>
+  </body>
+</html>
