@@ -11,12 +11,17 @@
     />
 
     <script>
+      const PENNYAUTH_TESTING = true;
       if (
         window.location.protocol == 'http:' &&
         window.location.hostname != 'localhost'
       ) {
         console.log('redirecting to secure site...');
         window.location.protocol = 'https:';
+      }
+
+      if (window.location.hostname == 'pennywall.com') {
+        PENNYAUTH_TESTING = false;
       }
     </script>
 
@@ -165,8 +170,8 @@ function loginHandler(req, res) {
       /></a>
     </div>
 
-    <script src="http://localhost:8082/dist/client.dev.js"></script>
-    <script src="../dist/pennyauth.dev.js"></script>
+    <script src="https://js.quid.works/v1/client.js"></script>
+    <script src="https://js.pennyauth.com/v1.js"></script>
     <script src="index.js"></script>
     <script>
       run();

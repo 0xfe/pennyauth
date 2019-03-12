@@ -168,33 +168,31 @@ class Client {
   }
 }
 
-function initDev(onReady, onTokenReady) {
-  // eslint-disable-next-line
-  const client = new Client({
-    el: document.getElementById('pennyauth-container'),
-    apiKey: 'k-9cd44e1a091a7e6b853f860bc65294d4',
-    originKey: 'zL7o3CQHtGf5eSPHF2ChFkFFWvQnAKCfmniZmp6NZ6k=',
-    apiBaseURL: 'http://localhost:8010/pennywall/us-central1',
-    quidBaseURL: 'http://localhost:3000',
-    quidAPIKey: 'kt-GXBB4MX58YCM4ABITU8Y7CM35XNLBSKF',
-    onReady,
-    onTokenReady,
-  });
-  client.install();
-  return client;
-}
-
 function init(onReady, onTokenReady) {
+  let client;
   // eslint-disable-next-line
-  const client = new Client({
-    apiKey: 'k-8d11e50e2fed4e5e83ecc7c335969cf6', // s-c28cb16b99486e4310fc253a814a435c
-    originKey: 'u5q1lZ5mHC9fvtGki0jYP9ROnOizkarxuAsQ2qLEOxw=',
-    onReady,
-    onTokenReady,
-  });
+  if (PENNYAUTH_TESTING) {
+    client = new Client({
+      el: document.getElementById('pennyauth-container'),
+      apiKey: 'k-9cd44e1a091a7e6b853f860bc65294d4',
+      originKey: 'zL7o3CQHtGf5eSPHF2ChFkFFWvQnAKCfmniZmp6NZ6k=',
+      apiBaseURL: 'http://localhost:8010/pennywall/us-central1',
+      quidBaseURL: 'http://localhost:3000',
+      quidAPIKey: 'kt-GXBB4MX58YCM4ABITU8Y7CM35XNLBSKF',
+      onReady,
+      onTokenReady,
+    });
+  } else {
+    client = new Client({
+      apiKey: 'k-8d11e50e2fed4e5e83ecc7c335969cf6', // s-c28cb16b99486e4310fc253a814a435c
+      originKey: 'u5q1lZ5mHC9fvtGki0jYP9ROnOizkarxuAsQ2qLEOxw=',
+      onReady,
+      onTokenReady,
+    });
+  }
 
   client.install();
   return client;
 }
 
-export { Client, init, initDev };
+export { Client, init };

@@ -5,7 +5,7 @@ function run() {
   const successEl = document.getElementById('success-message');
 
   // eslint-disable-next-line
-  const client = pennyauth.initDev(
+  const client = pennyauth.init(
     () => {},
     () => {
       loginButton.disabled = false;
