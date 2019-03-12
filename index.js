@@ -116,14 +116,14 @@ class Client {
 
     // Install QUID iframe
     this.q.install();
-
-    // Setup UI container
-    this.installButton();
   }
 
   ready() {
     log('QUID ready:', this.options.quidBaseURL);
     this.isReady = true;
+
+    // Setup UI container
+    this.installButton();
     this.options.onReady();
   }
 
