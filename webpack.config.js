@@ -39,17 +39,6 @@ const clientBundle = {
   },
 };
 
-// The versionedClientBundle is built alongside the client bundle.
-// There is no difference except for the generated filename contains a version (if TAG_NAME is provided) or hash.
-const versionedClientBundle = Object.assign({}, clientBundle, {
-  output: {
-    filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist',
-    library: 'pennyauth',
-  },
-});
-
 module.exports = (env) => {
   const tag = env.TAG_NAME || process.env.TAG_NAME;
   const hasTag = typeof tag !== 'undefined' && tag !== '';
@@ -83,7 +72,7 @@ module.exports = (env) => {
     return part;
   };
 
-  const frontendParts = [versionedClientBundle].map(taggedPart, injectNodeEnv);
+  const frontendParts = [clientBundle].map(taggedPart, injectNodeEnv);
 
   if (env.NODE_ENV === 'production') {
     return frontendParts.map(addSourcemaps);
