@@ -1,25 +1,23 @@
 import API from './api';
+import { merge, log, randomString } from './helpers';
 
-function merge(o, defaults) {
-  return Object.assign({}, o, defaults);
-}
+import './pennyauth.css';
 
-function log(...args) {
-  // eslint-disable-next-line
-  console.log(...args);
-}
-
+// Pennyauth client implementation, which communicates with the
+// QUID API servers and the Pennyauth server (github.com/0xfe/pennyauth-server)
 class Client {
   constructor(options) {
     this.options = merge(
       {
-        el: document.body,
+        el: null,
         apiKey: 'NO_API_KEY',
         originKey: 'NO_ORIGIN_KEY',
         quid: window.quid,
-        quidAPIKey: 'kt-F6EJC9K19TUJYL6ML7RA6G03VLNGUQ3Q',
+        quidAPIKey: 'kp-DX7BKCK8OP8ZSKOES6JMMDTD41CTNM21',
         quidBaseURL: 'https://app.quid.works',
-        onReady: () => {},
+        onReady: () => {
+          log('Pennyauth ready to go.');
+        },
       },
       options,
     );
@@ -29,13 +27,24 @@ class Client {
     if (this.options.apiBaseURL) {
       apiParams.baseURL = this.options.apiBaseURL;
     }
+
     this.api = new API(apiParams);
   }
 
+  installButton() {
+    if (!this.options.el) return;
+    const { el } = this.options;
+
+    const container = document.createElement('div');
+    container.className = 'pennyauth-container';
+    el.appendChild(container);
+  }
+
+  // Initialize the QUID client libraries.
   install() {
     this.Quid = this.options.quid && this.options.quid.Quid;
     if (!this.Quid) {
-      throw new Error('Missing QUID client');
+      throw new Error("Missing QUID client. Make sure it's included in your HTML document.");
     }
 
     // Setup QUID
@@ -47,7 +56,12 @@ class Client {
         this.ready();
       },
     });
+
+    // Install QUID iframe
     this.q.install();
+
+    // Setup UI container
+    this.installButton();
   }
 
   ready() {
@@ -60,11 +74,11 @@ class Client {
     return this.q.requestPayment({
       apiKey: this.options.quidAPIKey,
       apiProxyMAC: this.options.originKey,
-      productID: 'captcha0',
-      productURL: 'this.URL',
-      productName: 'Captcha request',
-      productDescription: 'This site only lets in humans',
-      requestID: 'ABCD',
+      productID: 'CAPTCHA-0',
+      productURL: window.location.origin,
+      productName: 'Access request',
+      productDescription: `A penny for access to ${window.location.origin}`,
+      requestID: randomString(10),
       price: 0.01,
       currency: 'CAD',
       errorCallback: (code) => {
@@ -77,22 +91,27 @@ class Client {
             receipt: resp,
           })
           .then((result) => {
-            onSuccess(result.data);
+            if (result.data.success) {
+              onSuccess(result.data.data);
+            } else {
+              onError({ code: 'VALIDATION_ERROR', error: result.data });
+            }
           })
           .catch((e) => {
-            onError({ code: 'APIERROR', error: e });
+            onError({ code: 'API_ERROR', error: e });
           });
       },
     });
   }
 }
 
-function init(onReady) {
+function initDev(onReady) {
   // eslint-disable-next-line
   const client = new Client({
-    apiKey: 'k-405a1100164f6f800d4f04314feb7909',
+    el: document.getElementById('pennyauth-container'),
+    apiKey: 'k-9cd44e1a091a7e6b853f860bc65294d4',
     originKey: 'zL7o3CQHtGf5eSPHF2ChFkFFWvQnAKCfmniZmp6NZ6k=',
-    // apiBaseURL: 'http://localhost:8010/pennywall/us-central1',
+    apiBaseURL: 'http://localhost:8010/pennywall/us-central1',
     quidBaseURL: 'http://localhost:3000',
     quidAPIKey: 'kt-GXBB4MX58YCM4ABITU8Y7CM35XNLBSKF',
     onReady,
@@ -101,4 +120,16 @@ function init(onReady) {
   return client;
 }
 
-export { Client, init };
+function init(onReady) {
+  // eslint-disable-next-line
+  const client = new Client({
+    apiKey: 'k-8d11e50e2fed4e5e83ecc7c335969cf6', // s-c28cb16b99486e4310fc253a814a435c
+    originKey: 'u5q1lZ5mHC9fvtGki0jYP9ROnOizkarxuAsQ2qLEOxw=',
+    onReady,
+  });
+
+  client.install();
+  return client;
+}
+
+export { Client, init, initDev };

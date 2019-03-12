@@ -12,6 +12,7 @@
         <div>Username: <input type="text" /></div>
         <div>Password: <input type="password" /></div>
         <button id="loginButton" type="submit" disabled>Login</button>
+        <div id="pennyauth-container"></div>
       </form>
       <div id="success" style="display:none;">
         <h1>Success!</h1>
@@ -25,7 +26,7 @@
       const formEl = document.getElementById('loginForm');
       const successEl = document.getElementById('success');
 
-      const client = pennyauth.init(() => {
+      const client = pennyauth.initDev(() => {
         loginButton.disabled = false;
       });
 
@@ -34,12 +35,10 @@
         ev.preventDefault();
         client.ask(
           resp => {
-            loginButton.disabled = false;
             console.log(resp);
-            if (resp.success) {
-              formEl.style.display = 'none';
-              successEl.style.display = 'block';
-            }
+            formEl.style.display = 'none';
+            successEl.style.display = 'block';
+            loginButton.disabled = false;
           },
           e => {
             console.error(e);
