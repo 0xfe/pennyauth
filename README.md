@@ -1,6 +1,8 @@
 # Pennyauth
 
-Pennyauth is a captcha replacement that uses micropayments.
+Pennyauth is a captcha replacement that uses micropayments. Try the demo on https://pennyauth.com.
+
+Also see the [pennyauth-server](https://github.com/0xfe/pennyauth-server) repository.
 
 # Building
 
