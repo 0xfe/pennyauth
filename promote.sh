@@ -6,7 +6,7 @@
 BUCKET=gs://pennyauth.com/js
 VERSION=$1
 
-TAG=`git describe --tags`
+TAG=`git describe --tags --abbrev=0`
 
 if [ "$VERSION" == "" ]; then
   echo Current tag: $TAG
