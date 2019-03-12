@@ -20,7 +20,7 @@
         window.location.protocol = 'https:';
       }
 
-      if (window.location.hostname == 'pennywall.com') {
+      if (window.location.hostname != 'localhost') {
         PENNYAUTH_TESTING = false;
       }
     </script>
