@@ -6,14 +6,20 @@
 BUCKET=gs://pennyauth.com/js
 VERSION=$1
 
+TAG=`git describe --tags`
+
 if [ "$VERSION" == "" ]; then
-  echo "Usage: promote VERSION"
+  echo Current tag: $TAG
+  echo Looking for matching versions...
+  gsutil ls $BUCKET/pennyauth.$TAG.* 2>/dev/null
+  echo " "
+  echo "Usage: $0 [VERSION]"
   exit -1
 fi
 
 
-echo "Matching versions:"
-gsutil ls $BUCKET/pennyauth.$VERSION.*
+echo "Looking for matching versions..."
+gsutil ls $BUCKET/pennyauth.$VERSION.* 2>/dev/null
 
 if [ "$?" != "0" ]; then
   echo "Could not find matching version."
@@ -24,5 +30,5 @@ echo "\nHit enter to promote $VERSION."
 read
 
 echo Promoting...
-gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z js $BUCKET/pennyauth.$VERSION.js $BUCKET/client.js
-gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z map $BUCKET/pennyauth.$VERSION.js.map $BUCKET/client.js.map
+gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z js $BUCKET/pennyauth.$VERSION.js $BUCKET/pennyauth.js
+gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z map $BUCKET/pennyauth.$VERSION.js.map $BUCKET/pennyauth.js.map
