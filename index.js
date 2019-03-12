@@ -18,6 +18,9 @@ class Client {
         onReady: () => {
           log('Pennyauth ready to go.');
         },
+        onTokenReady: (token) => {
+          log('Pennyauth token ready:', token);
+        },
       },
       options,
     );
@@ -29,15 +32,57 @@ class Client {
     }
 
     this.api = new API(apiParams);
+    this.token = null;
+  }
+
+  reset() {
+    if (this.checkboxEl) {
+      this.checkboxEl.disabled = false;
+      this.checkboxEl.checked = false;
+    }
+    this.token = null;
   }
 
   installButton() {
     if (!this.options.el) return;
     const { el } = this.options;
 
-    const container = document.createElement('div');
-    container.className = 'pennyauth-container';
-    el.appendChild(container);
+    const containerEl = document.createElement('div');
+    containerEl.className = 'pennyauth pennyauth-container pennyauth-style-default';
+    el.appendChild(containerEl);
+
+    const checkboxEl = document.createElement('input');
+    checkboxEl.setAttribute('type', 'checkbox');
+    checkboxEl.className = 'pennyauth pennyauth-checkbox';
+    checkboxEl.addEventListener('change', () => {
+      this.messageEl.innerText = 'Validating...';
+      this.checkboxEl.disabled = true;
+      this.ask(this.onSuccess.bind(this), this.onError.bind(this));
+    });
+    containerEl.appendChild(checkboxEl);
+
+    const messageEl = document.createElement('span');
+    messageEl.className = 'pennyauth pennyauth-message';
+    containerEl.appendChild(messageEl);
+    messageEl.innerText = '1¢ to Login';
+
+    this.containerEl = containerEl;
+    this.checkboxEl = checkboxEl;
+    this.messageEl = messageEl;
+  }
+
+  onSuccess() {
+    this.checkboxEl.checked = true;
+    this.checkboxEl.disabled = true;
+    this.containerEl.className = 'pennyauth pennyauth-container pennyauth-style-default-approved';
+    this.messageEl.innerText = 'Login approved';
+    this.options.onTokenReady(this.token);
+  }
+
+  onError() {
+    this.checkboxEl.checked = false;
+    this.checkboxEl.disabled = false;
+    this.messageEl.innerText = '1¢ to Login';
   }
 
   // Initialize the QUID client libraries.
@@ -71,6 +116,11 @@ class Client {
   }
 
   ask(onSuccess, onError) {
+    if (this.token) {
+      onSuccess(this.token);
+      return true;
+    }
+
     return this.q.requestPayment({
       apiKey: this.options.quidAPIKey,
       apiProxyMAC: this.options.originKey,
@@ -92,6 +142,7 @@ class Client {
           })
           .then((result) => {
             if (result.data.success) {
+              this.token = result.data.data;
               onSuccess(result.data.data);
             } else {
               onError({ code: 'VALIDATION_ERROR', error: result.data });
@@ -105,7 +156,7 @@ class Client {
   }
 }
 
-function initDev(onReady) {
+function initDev(onReady, onTokenReady) {
   // eslint-disable-next-line
   const client = new Client({
     el: document.getElementById('pennyauth-container'),
@@ -115,17 +166,19 @@ function initDev(onReady) {
     quidBaseURL: 'http://localhost:3000',
     quidAPIKey: 'kt-GXBB4MX58YCM4ABITU8Y7CM35XNLBSKF',
     onReady,
+    onTokenReady,
   });
   client.install();
   return client;
 }
 
-function init(onReady) {
+function init(onReady, onTokenReady) {
   // eslint-disable-next-line
   const client = new Client({
     apiKey: 'k-8d11e50e2fed4e5e83ecc7c335969cf6', // s-c28cb16b99486e4310fc253a814a435c
     originKey: 'u5q1lZ5mHC9fvtGki0jYP9ROnOizkarxuAsQ2qLEOxw=',
     onReady,
+    onTokenReady,
   });
 
   client.install();

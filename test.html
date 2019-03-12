@@ -4,15 +4,19 @@
     <link rel="stylesheet" href="test.css" />
   </head>
   <body>
-    <h1>
-      Captcha Demo
-    </h1>
     <div class="demo container">
-      <form id="loginForm" class="container">
-        <div>Username: <input type="text" /></div>
-        <div>Password: <input type="password" /></div>
-        <button id="loginButton" type="submit" disabled>Login</button>
+      <p style="padding: 20px;"></p>
+      <form id="login-form" class="container">
+        <h3>Login to FooBar</h3>
+        <br />
+        <div class="formgroup">
+          <input id="username" type="text" placeholder="Your email address" />
+        </div>
+        <div>
+          <input id="password" type="password" placeholder="Your password" />
+        </div>
         <div id="pennyauth-container"></div>
+        <button id="loginButton" type="submit" disabled>LOGIN</button>
       </form>
       <div id="success" style="display:none;">
         <h1>Success!</h1>
@@ -23,12 +27,15 @@
     <script src="dist/pennyauth.dev.js"></script>
     <script>
       const loginButton = document.getElementById('loginButton');
-      const formEl = document.getElementById('loginForm');
+      const formEl = document.getElementById('login-form');
       const successEl = document.getElementById('success');
 
-      const client = pennyauth.initDev(() => {
-        loginButton.disabled = false;
-      });
+      const client = pennyauth.initDev(
+        () => {},
+        () => {
+          loginButton.disabled = false;
+        }
+      );
 
       function login(ev) {
         loginButton.disabled = true;
