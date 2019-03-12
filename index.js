@@ -74,6 +74,7 @@ class Client {
     linkEl.appendChild(document.createTextNode('Powered by Pennyauth'));
     linkEl.title = 'Powered by https://pennyauth.com';
     linkEl.href = 'https://pennyauth.com';
+    linkEl.target = '_blank';
     linkEl.className = 'pennyauth pennyauth-link';
     containerEl.appendChild(linkEl);
 

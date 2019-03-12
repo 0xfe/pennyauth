@@ -51,6 +51,7 @@
 .pennyauth a {
   font-size: 10px;
   text-decoration: none;
+  color: gray;
 }
 
 .pennyauth a:visited {

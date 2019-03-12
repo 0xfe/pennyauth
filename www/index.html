@@ -57,9 +57,9 @@
 
         <h2>How do I use it?</h2>
         <div class="entry">
-          <h3>Step 1.</h3>
-          Get Pennyauth API keys for your website. Pennyauth only works with
-          HTTPS origins.
+          <h3>Step 1. Get your API keys</h3>
+          Use the command below to get Pennyauth API keys for your website.
+          Pennyauth only works with HTTPS origins.
 
           <!-- prettier-ignore -->
           <code>
@@ -67,8 +67,10 @@ $ pennyauth create keys --origin https://mywebsite.com
           </code>
         </div>
         <div class="entry">
-          <h3>Step 2.</h3>
-          Add it to your website.
+          <h3>Step 2. Add it to your website</h3>
+          Load the Pennyauth script into your webpage and connect your login
+          handler to it. The Pennyauth widget will be installed into the DOM
+          element specified in el.
           <!-- prettier-ignore -->
           <code>
 &lt;script src="https://js.pennyauth.com/v1.js"/&gt;
@@ -90,12 +92,22 @@ $ pennyauth create keys --origin https://mywebsite.com
           </code>
         </div>
         <div class="entry">
-          <h3>Step 3.</h3>
-          Verify the captcha on the server.
+          <h3>Step 3. Validate the captcha on the server</h3>
+          <p>
+            Use the SHA256 hash of your API secret to construct a HMAC of the
+            token payload (concatenated into a comma-separated string.) If the
+            HMAC matches the signature, then the token is valid.
+          </p>
+
+          <p>
+            To protect from forged tokens, make sure to also validate that the
+            token's apiKey and origin fields match yours, and isn't more than a
+            minute old. Use the following NodeJS code as an example.
+          </p>
 
           <!-- prettier-ignore -->
           <code>
-function onLogin(req) {
+function loginHandler(req, res) {
   // Get token from request
   const token = req.params.token;
 
@@ -123,8 +135,8 @@ function onLogin(req) {
     throw new Error("Invalid token scope")
   }
 
-  // Make sure this token isn't too old
-  if (token.unixTime > time.Now().Add(120)) {
+  // Make sure this token isn't more than a minute old
+  if (token.unixTime < (Math.floor(Date.now() / 1000) - 60)) {
     throw new Error("Token expired")
   }
 
