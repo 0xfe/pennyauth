@@ -3,7 +3,7 @@
 # This script promotes a specific version to production by
 # copying the versioned bundle to the public one.
 
-BUCKET=gs://pennyauth.com/js
+BUCKET=gs://js.pennyauth.com
 VERSION=$1
 
 TAG=`git describe --tags --abbrev=0`
@@ -30,5 +30,5 @@ echo "\nHit enter to promote $VERSION."
 read
 
 echo Promoting...
-gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z js $BUCKET/pennyauth.$VERSION.js $BUCKET/pennyauth.js
-gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z map $BUCKET/pennyauth.$VERSION.js.map $BUCKET/pennyauth.js.map
+gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z js $BUCKET/pennyauth.$VERSION.js $BUCKET/v1.js
+gsutil  -h "Cache-control:public,max-age=120" cp -a public-read -z map $BUCKET/pennyauth.$VERSION.js.map $BUCKET/v1.js.map

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 VERSION=$1
-BUCKET=gs://pennyauth.com/js
+BUCKET=gs://js.pennyauth.com
 
 git diff-index --quiet HEAD --
 DIRTY="$?"
