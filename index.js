@@ -51,6 +51,10 @@ class Client {
     containerEl.className = 'pennyauth pennyauth-container pennyauth-style-default';
     el.appendChild(containerEl);
 
+    const insideDivEl = document.createElement('div');
+    insideDivEl.className = 'pennyauth pennyauth-inside';
+    containerEl.appendChild(insideDivEl);
+
     const checkboxEl = document.createElement('input');
     checkboxEl.setAttribute('type', 'checkbox');
     checkboxEl.className = 'pennyauth pennyauth-checkbox';
@@ -59,12 +63,19 @@ class Client {
       this.checkboxEl.disabled = true;
       this.ask(this.onSuccess.bind(this), this.onError.bind(this));
     });
-    containerEl.appendChild(checkboxEl);
+    insideDivEl.appendChild(checkboxEl);
 
     const messageEl = document.createElement('span');
     messageEl.className = 'pennyauth pennyauth-message';
-    containerEl.appendChild(messageEl);
     messageEl.innerText = '1¢ to Login';
+    insideDivEl.appendChild(messageEl);
+
+    const linkEl = document.createElement('a');
+    linkEl.appendChild(document.createTextNode('Powered by Pennyauth'));
+    linkEl.title = 'Powered by https://pennyauth.com';
+    linkEl.href = 'https://pennyauth.com';
+    linkEl.className = 'pennyauth pennyauth-link';
+    containerEl.appendChild(linkEl);
 
     this.containerEl = containerEl;
     this.checkboxEl = checkboxEl;

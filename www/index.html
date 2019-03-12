@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <title>
+      Pennyauth: Replace your captchas with micropayments
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons|Nunito"
+    />
+
+    <script>
+      if (
+        window.location.protocol == 'http:' &&
+        window.location.hostname != 'localhost'
+      ) {
+        console.log('redirecting to secure site...');
+        window.location.protocol = 'https:';
+      }
+    </script>
+
+    <link rel="stylesheet" href="https://js.quid.works/v1/assets/quid.css" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="demo container">
+      <div class="heading">
+        <img src="logo.png" width="300px" />
+        <br />
+        Pennyauth is an open-source captcha alternative that uses micropayments.
+      </div>
+      <p></p>
+      <form id="login-form" class="container">
+        <h3 style="padding:3px;">Try the Demo</h3>
+        Use foobar / password.
+        <p></p>
+        <div class="formgroup">
+          <input id="username" type="text" placeholder="Your email address" />
+        </div>
+        <div>
+          <input id="password" type="password" placeholder="Your password" />
+        </div>
+        <div id="pennyauth-container"></div>
+        <button id="loginButton" type="submit" disabled>LOGIN</button>
+      </form>
+      <div id="success-message" style="display:none;">
+        <h3>Login Success!</h3>
+      </div>
+      <div class="faq">
+        <h2>How does it work?</h2>
+        Pennyauth uses <a href="https://quid.works" target="_blank">QUID</a>
+        to process micropayments. When a captcha is required, Pennyauth requests
+        a QUID payment, and validates it on the Pennyauth server. After
+        validation, it creates a unique signed login token that can be verified
+        by your application.
+
+        <h2>How do I use it?</h2>
+        <div class="entry">
+          <h3>Step 1.</h3>
+          Get Pennyauth API keys for your website. Pennyauth only works with
+          HTTPS origins.
+
+          <!-- prettier-ignore -->
+          <code>
+$ pennyauth create keys --origin https://mywebsite.com
+          </code>
+        </div>
+        <div class="entry">
+          <h3>Step 2.</h3>
+          Add it to your website.
+          <!-- prettier-ignore -->
+          <code>
+&lt;script src="https://js.pennyauth.com/v1.js"/&gt;
+&lt;script&gt;
+  const client = new pennyauth.Client({
+    el: document.getElementByID('pennywall-div'),
+    apiKey: 'YOUR_API_KEY',
+    originKey: 'YOUR_ORGIN_KEY',
+    onTokenReady: () => { enableLoginButton() }
+  });
+
+  function onLoginClicked() {
+    // Get token and send along with your login API call
+    client.ask((token) => {
+      processLogin(username, password, token);
+    });
+  }
+&lt;/script&gt;
+          </code>
+        </div>
+        <div class="entry">
+          <h3>Step 3.</h3>
+          Verify the captcha on the server.
+
+          <!-- prettier-ignore -->
+          <code>
+function onLogin(req) {
+  // Get token from request
+  const token = req.params.token;
+
+  // Create a SHA256 hash of the API secret
+  const hashedSecret = crypto
+    .createHash('SHA256')
+    .update(API_SECRET)
+    .digest('hex');
+
+  // Get HMAC of token payload
+  const payload = [
+    token.id, token.unixTime,
+    token.origin, token.apiKey].join(',');
+  const sig = crypto
+    .createHmac('SHA256', hashedSecret)
+    .update(payload).digest('base64');
+
+  // Verify HMAC signature
+  if (sig !== req.sig) {
+    throw new Error("Invalid token")
+  }
+
+  // Make sure this token is yours
+  if (token.apiKey !== 'MY_API_KEY' || token.origin !== 'https://my.origin.com') {
+    throw new Error("Invalid token scope")
+  }
+
+  // Make sure this token isn't too old
+  if (token.unixTime > time.Now().Add(120)) {
+    throw new Error("Token expired")
+  }
+
+  // All good: validate username, password and log user in.
+  // ...
+}
+          </code>
+        </div>
+
+        <h2>Where does the money go?</h2>
+        <div class="entry">
+          We keep the money :-) It keeps this service free and operational.
+        </div>
+
+        <h2>But I want my money!</h2>
+        <div class="entry">
+          Lucky for you, Pennyauth is open-source. Fork it, host it, and watch
+          the pennies roll in.
+        </div>
+      </div>
+      <a href="https://github.com/0xfe/pennyauth"
+        ><img
+          style="position: absolute; top: 0; right: 0; border: 0; width: 149px; height: 149px;"
+          src="http://aral.github.com/fork-me-on-github-retina-ribbons/right-red@2x.png"
+          alt="Fork me on GitHub"
+      /></a>
+    </div>
+
+    <script src="http://localhost:8082/dist/client.dev.js"></script>
+    <script src="../dist/pennyauth.dev.js"></script>
+    <script src="index.js"></script>
+    <script>
+      run();
+    </script>
+  </body>
+</html>

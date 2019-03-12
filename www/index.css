@@ -1,9 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 14px;
+  line-height: 1.4;
+  color: darkslategray;
 }
 
 h3 {
@@ -16,11 +22,13 @@ h3 {
   padding-top: 1.5rem;
 }
 
-input {
-  margin: 5px;
+input[type='text'],
+input[type='password'] {
+  margin-bottom: 10px;
   padding: 10px;
   border: 2px solid lightgray;
   border-radius: 3px;
+  width: 220px;
 }
 
 label {
@@ -30,6 +38,18 @@ label {
   opacity: 1;
   transform: translateY(0);
   transition: all 0.2s ease-out;
+}
+
+code {
+  font-size: 14px;
+  display: block;
+  white-space: pre-wrap;
+  text-align: left;
+  background: rgb(255, 228, 199);
+  padding: 10px;
+  border-radius: 3px;
+  margin: 10px;
+  min-width: 360px;
 }
 
 input:placeholder-shown + label {
@@ -44,7 +64,13 @@ input:placeholder-shown + label {
   justify-content: center;
 }
 
-#login-form {
+.heading {
+  text-align: center;
+  font-size: 16px;
+}
+
+#login-form,
+#success-message {
   padding: 30px;
   border: 1px solid lightgray;
   border-radius: 3px;
@@ -62,4 +88,12 @@ input:placeholder-shown + label {
 
 .container button:disabled {
   background-color: lightgray;
+}
+
+.faq {
+  max-width: 700px;
+}
+
+.faq .entry {
+  padding-bottom: 10px;
 }
