@@ -1,0 +1,4 @@
+#!/bin/sh
+# Helpler script to call the cloud function that generates a pennywall.
+sed 's/\(.*\)/{"origin": "\1"}/' | curl -X POST "https://us-central1-pennyauth.cloudfunctions.net/createAPIKey" \
+    -H "Content-Type:application/json" --data '@-'
