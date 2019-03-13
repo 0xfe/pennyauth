@@ -59,12 +59,40 @@
         <h3>Login Success!</h3>
       </div>
       <div class="faq">
+        <h1 style="text-align:center;">The FAQ</h1>
+        <h2>Do I have to enter my credit-card every time?</h2>
+        <div class="entry">
+          Nope, just once, during your first payment. Pennyauth remembers who
+          you are, so all future payments are one-click.
+        </div>
+
+        <h2>Where does the money go?</h2>
+        <div class="entry">
+          We keep the money :-) It keeps this service free and operational.
+        </div>
+
+        <h2>Can I charge more than a penny?</h2>
+        <div class="entry">
+          Yep. But why do you hate your users?
+        </div>
+
+        <h2>
+          Doesn't this disenfranchise the underpriveleged, and further stratify
+          society?
+        </h2>
+        <div class="entry">
+          Yikes. You can always fallback to a regular captcha. Crosswalks ain't
+          so bad.
+        </div>
+
         <h2>How does it work?</h2>
-        Pennyauth uses <a href="https://quid.works" target="_blank">QUID</a>
-        to process micropayments. When a captcha is required, Pennyauth requests
-        a QUID payment, and validates it on the Pennyauth server. After
-        validation, it creates a unique signed login token that can be verified
-        by your application.
+        <div class="entry">
+          Pennyauth uses <a href="https://quid.works" target="_blank">QUID</a>
+          to process micropayments. When a captcha is required, the browser
+          makes a QUID payment request and validates the receipt on the
+          Pennyauth server. After validation, it creates a unique signed login
+          token that can be verified by your application.
+        </div>
 
         <h2>How do I use it?</h2>
         <div class="entry">
@@ -74,7 +102,12 @@
 
           <!-- prettier-ignore -->
           <code>
-$ pennyauth create keys --origin https://mywebsite.com
+$ echo https://yourwebsite.com | bash <(curl -s https://pennyauth.com/new)
+{
+  "apiKey":"k-0e062e46670a19ae26e0a56f366c0685",
+  "apiSecret":"s-f8ab0a1650bbedb657157735f85139a0",
+  "originKey":"fVrkjZsbWRyGioalqowHwtUGKKFFGMSUal1A5OVIaHM="
+}
           </code>
         </div>
         <div class="entry">
@@ -157,15 +190,20 @@ function loginHandler(req, res) {
           </code>
         </div>
 
-        <h2>Where does the money go?</h2>
-        <div class="entry">
-          We keep the money :-) It keeps this service free and operational.
-        </div>
-
         <h2>But I want my money!</h2>
         <div class="entry">
-          Lucky for you, Pennyauth is open-source. Fork it, host it, and watch
-          the pennies roll in.
+          Lucky for you, Pennyauth is open-source.
+          <a href="https://github.com/0xfe/pennyauth">Fork it</a>,
+          <a href="https://github.com/0xfe/pennyauth-server">host it</a>, and
+          watch the pennies roll in.
+        </div>
+
+        <h2>I hate you for doing this. How do I reach you?</h2>
+        <div class="entry">
+          Tweet me your hate at
+          <a href="https://twitter.com/11111110b">@11111110b</a>. Even better,
+          send pull requests to
+          <a href="https://github.com/0xfe">0xfe@github</a>.
         </div>
       </div>
       <a href="https://github.com/0xfe/pennyauth"

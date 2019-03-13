@@ -17,6 +17,11 @@ h3 {
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+  color: darkmagenta;
+}
+
 .form-group {
   position: relative;
   padding-top: 1.5rem;
@@ -92,6 +97,10 @@ input:placeholder-shown + label {
 
 .faq {
   max-width: 700px;
+}
+
+.faq h2 {
+  margin-bottom: 5;
 }
 
 .faq .entry {
