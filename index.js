@@ -184,8 +184,8 @@ function init(onReady, onTokenReady) {
     });
   } else {
     client = new Client({
-      apiKey: 'k-8d11e50e2fed4e5e83ecc7c335969cf6', // s-c28cb16b99486e4310fc253a814a435c
-      originKey: 'u5q1lZ5mHC9fvtGki0jYP9ROnOizkarxuAsQ2qLEOxw=',
+      apiKey: 'k-482d092d5ac0046bbb0725df4fe2a3ca', // s-7ad865c6c7892f6aa44e3ae7b8eb153d
+      originKey: '3CVEyd0GmNJYEJ5/XB0/09T60qmVC6q92RJiC97GbDk=',
       onReady,
       onTokenReady,
     });
