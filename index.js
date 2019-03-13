@@ -168,12 +168,12 @@ class Client {
   }
 }
 
-function init(onReady, onTokenReady) {
+function init(el, onReady, onTokenReady) {
   let client;
   // eslint-disable-next-line
   if (PENNYAUTH_TESTING) {
     client = new Client({
-      el: document.getElementById('pennyauth-container'),
+      el,
       apiKey: 'k-9cd44e1a091a7e6b853f860bc65294d4',
       originKey: 'zL7o3CQHtGf5eSPHF2ChFkFFWvQnAKCfmniZmp6NZ6k=',
       apiBaseURL: 'http://localhost:8010/pennywall/us-central1',
@@ -184,6 +184,7 @@ function init(onReady, onTokenReady) {
     });
   } else {
     client = new Client({
+      el,
       apiKey: 'k-482d092d5ac0046bbb0725df4fe2a3ca', // s-7ad865c6c7892f6aa44e3ae7b8eb153d
       originKey: '3CVEyd0GmNJYEJ5/XB0/09T60qmVC6q92RJiC97GbDk=',
       onReady,

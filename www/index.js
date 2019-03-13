@@ -6,6 +6,7 @@ function run() {
 
   // eslint-disable-next-line
   const client = pennyauth.init(
+    document.getElementById('pennyauth-container'),
     () => {},
     () => {
       loginButton.disabled = false;
