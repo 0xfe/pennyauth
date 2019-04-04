@@ -5,11 +5,6 @@
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons|Nunito"
-    />
-
     <script>
       let PENNYAUTH_TESTING = true;
       if (
@@ -25,18 +20,43 @@
       }
     </script>
 
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-NR77G7W');
+    </script>
+    <!-- End Google Tag Manager -->
+
     <link rel="stylesheet" href="https://js.quid.works/v1/assets/quid.css" />
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <div class="demo container">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-NR77G7W"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div class="container">
       <div class="heading">
         <img src="logo.png" width="300px" />
         <br />
         Pennyauth is an open-source captcha alternative that uses micropayments.
       </div>
       <p></p>
-      <form id="login-form" class="container">
+      <form id="login-form">
         <h3 style="padding:3px;">Try the Demo</h3>
         Use foobar / password.
         <p></p>
@@ -60,20 +80,16 @@
       </div>
       <div class="faq">
         <h1 style="text-align:center;">The FAQ</h1>
+        <h2>Why?</h2>
+        <div class="entry">
+          This is somewhat of an experiment. Lots of people find captchas
+          painful and obnoxious. Maybe a penny is worthy tradeoff?
+        </div>
+
         <h2>Do I have to enter my credit-card every time?</h2>
         <div class="entry">
           Nope, just once, during your first payment. Pennyauth remembers who
           you are, so all future payments are one-click.
-        </div>
-
-        <h2>Where does the money go?</h2>
-        <div class="entry">
-          We keep the money :-) It keeps this service free and operational.
-        </div>
-
-        <h2>Can I charge more than a penny?</h2>
-        <div class="entry">
-          Yep. But why do you hate your users?
         </div>
 
         <h2>
@@ -81,8 +97,8 @@
           society?
         </h2>
         <div class="entry">
-          Yikes. You can always fallback to a regular captcha. Crosswalks ain't
-          so bad.
+          Yikes. Pennyauth can optionally fallback to a regular captcha.
+          Crosswalks ain't so bad. NBD.
         </div>
 
         <h2>How does it work?</h2>
@@ -106,7 +122,7 @@ $ echo https://yourwebsite.com | bash <(curl -s https://pennyauth.com/new)
 {
   "apiKey":"k-0e062e46670a19ae26e0a56f366c0685",
   "apiSecret":"s-f8ab0a1650bbedb657157735f85139a0",
-  "originKey":"fVrkjZsbWRyGioalqowHwtUGKKFFGMSUal1A5OVIaHM="
+  "originKey":"fVrkl1A5OVIaHM="
 }
           </code>
         </div>
@@ -188,6 +204,11 @@ function loginHandler(req, res) {
   // ...
 }
           </code>
+        </div>
+
+        <h2>Where do the pennies go?</h2>
+        <div class="entry">
+          We keep the pennies :-) It keeps this service free and operational.
         </div>
 
         <h2>But I want my money!</h2>
